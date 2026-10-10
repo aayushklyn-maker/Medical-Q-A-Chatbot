@@ -64,8 +64,8 @@ User question ──► Flask /get ──► Retriever ──► Prompt + contex
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/<your-repo>.git
-cd <your-repo>
+git clone https://github.com/aayushklyn-maker/Medical-Q-A-Chatbot.git
+cd <https://github.com/aayushklyn-maker/Medical-Q-A-Chatbot.git>
 ```
 
 ### 2. Create a virtual environment and install dependencies
