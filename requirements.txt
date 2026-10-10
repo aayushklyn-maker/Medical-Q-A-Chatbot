@@ -3,23 +3,27 @@ python-dotenv
 
 # LLM APIs
 mistralai
+groq
 
 # LangChain
 langchain
 langchain-core
 langchain-community
 langchain-mistralai
+langchain-groq
 
 # Hugging Face / Embeddings
 transformers
 sentence-transformers
 huggingface-hub
+torch
 
 # Vector Databases
 langchain-pinecone
 
 # Document processing
 pypdf
+fonttools
 
 # Web / HTTP
 flask

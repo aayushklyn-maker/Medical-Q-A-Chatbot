@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medical Chatbot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <!-- Flask: put this file in templates/ and style.css in static/ -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app">
+
+    <aside class="rail">
+      <h1 class="brand">Medical Chatbot</h1>
+      <p class="tagline">Ask a health question. Answers come from the medical documents you indexed.</p>
+
+      <div class="suggestions" id="suggestions">
+        <p class="rail-title">Try asking</p>
+        <button type="button" class="chip">What are the symptoms of diabetes?</button>
+        <button type="button" class="chip">How is hypertension treated?</button>
+        <button type="button" class="chip">What causes anemia?</button>
+      </div>
+
+      <p class="disclaimer">
+        This tool gives general information only. It is not a diagnosis or medical advice.
+        For emergencies, contact your local emergency number.
+      </p>
+    </aside>
+
+    <main class="chat">
+      <div class="messages" id="messages" aria-live="polite">
+        <div class="msg bot">
+          <div class="bubble">Hello. Ask me about a symptom, condition, or treatment and I will answer from the medical documents I have.</div>
+        </div>
+      </div>
+
+      <div class="composer">
+        <input type="text" id="input" placeholder="Type your question" autocomplete="off" aria-label="Your question">
+        <button type="button" id="send">Send</button>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    const messages = document.getElementById("messages");
+    const input = document.getElementById("input");
+    const sendBtn = document.getElementById("send");
+    const suggestions = document.getElementById("suggestions");
+
+    function addMessage(text, who) {
+      const row = document.createElement("div");
+      row.className = "msg " + who;
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = text;
+      row.appendChild(bubble);
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+      return row;
+    }
+
+    function addTyping() {
+      const row = document.createElement("div");
+      row.className = "msg bot";
+      row.innerHTML = '<div class="bubble typing"><span></span><span></span><span></span></div>';
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+      return row;
+    }
+
+    async function send(text) {
+      text = (text || input.value).trim();
+      if (!text) return;
+
+      addMessage(text, "user");
+      input.value = "";
+      input.disabled = sendBtn.disabled = true;
+      const typing = addTyping();
+
+      try {
+        // Your Flask route should accept a form field named "msg" and return the answer as plain text.
+        const res = await fetch("/get", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({ msg: text })
+        });
+        if (!res.ok) throw new Error("Request failed (" + res.status + ")");
+        const answer = await res.text();
+        typing.remove();
+        addMessage(answer, "bot");
+      } catch (err) {
+        typing.remove();
+        addMessage("Something went wrong and your question was not answered. Check that the server is running, then try again.", "bot error");
+      } finally {
+        input.disabled = sendBtn.disabled = false;
+        input.focus();
+      }
+    }
+
+    sendBtn.addEventListener("click", () => send());
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
+    });
+    suggestions.addEventListener("click", (e) => {
+      if (e.target.classList.contains("chip")) send(e.target.textContent);
+    });
+  </script>
+</body>
+</html>
