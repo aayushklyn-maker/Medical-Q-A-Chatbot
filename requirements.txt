@@ -1,0 +1,46 @@
+# Environment
+python-dotenv
+
+# LLM APIs
+mistralai
+
+# LangChain
+langchain
+langchain-core
+langchain-community
+langchain-mistralai
+langchain-pinecone
+langgraph
+
+# Hugging Face / Embeddings
+transformers
+sentence-transformers
+huggingface-hub
+
+# Vector databases
+chromadb
+faiss-cpu
+
+# Document processing
+pypdf
+python-docx
+beautifulsoup4
+
+# Web / HTTP
+requests
+httpx
+fastapi
+tiktoken
+flask
+
+# Data / ML
+numpy
+pandas
+scikit-learn
+
+# Jupyter
+jupyter
+ipykernel
+
+# Utilities
+tqdm
