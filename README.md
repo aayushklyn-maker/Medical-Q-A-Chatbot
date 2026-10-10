@@ -90,7 +90,7 @@ You can get keys from [Pinecone](https://www.pinecone.io/), [Mistral AI](https:/
 
 ### 4. Add your documents
 
-Place your medical documents in the `data/` folder. This project uses *The Gale Encyclopedia of Medicine, 3rd Edition* as its knowledge source. The book is copyrighted, so it is not included in the repository. Add your own copy to `data/` before indexing.
+The `data/` folder already contains *The Gale Encyclopedia of Medicine, 3rd Edition*, which this project uses as its knowledge source. To use your own documents instead, replace the file in `data/` with yours before indexing.
 
 ### 5. Build the vector index
 
